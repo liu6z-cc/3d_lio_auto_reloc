@@ -20,7 +20,14 @@ UltraFastMapPublisher 是针对 ROS 系统大规模点云地图发布场景的�
 自动缓存转换后的 Fast Format 文件，通过文件修改时间（mtime）判断是否需要重新转换，避免频繁重启节点时重复解析 PCD；开启自动转换后，无紧凑格式文件时会自动生成，失败则回退到 PCD 加载，不影响核心功能。
 4. 可视化进度与统计
 新增 ConsoleProgressBar 进度回调机制，实时输出加载阶段、进度百分比、已处理点数；额外发布 /map_stats 话题，输出点云数量、加载耗时、坐标范围等统计信息，方便调试和监控。
-![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/UltraFastMapPublisher.png)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/liu6z-cc/3d_lio_auto_reloc/main/Flowchart/UltraFastMapPublisher.png" 
+       alt="UltraFastMapPublisher工作流程图" 
+       width="600"
+       style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <br>
+  <em>UltraFastMapPublisher节点工作流程图</em>
+</div>
 ### ---使用事项---
 注意事项：必需二进制pcd文件为输入源
 python convert_pcd_to_binary.py [输入文件] [输出文件]
@@ -51,11 +58,25 @@ yaw_tolerance：       重定位验证的角度容差（单位：弧度）：当
 ## ------pose_recovery_3d功能包介绍------
 ### pose_recovery_3d_node
 实现位姿记录，监听机器人的全局位姿，定时自动保存到 param/下的两个JSON 文件（缓冲区交替写入），系统重启时加载历史位姿；仅在重定位完成后才开始保存，避免保存错误位姿。
-![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/pose_recovery_3d_node.png)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/liu6z-cc/3d_lio_auto_reloc/main/Flowchart/pose_recovery_3d_node.png" 
+       alt="pose_recovery_3d_node工作流程图" 
+       width="600"
+       style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <br>
+  <em>pose_recovery_3d_node节点工作流程图</em>
+</div>
 
 ### auto_relocalization_3d_node
 实现自动重定位与验证，系统重启后自动加载历史位姿，发布/initialpose触发 SLAM 重定位，验证重定位（position_tolerance + yaw_tolerance），重定位成功后通知位姿保存节点开始工作；同时支持目标点触发重定位、手动服务触发重定位。
-![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/auto_relocalization_3d_node.png)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/liu6z-cc/3d_lio_auto_reloc/main/Flowchart/auto_relocalization_3d_node.png" 
+       alt="auto_relocalization_3d_node工作流程图" 
+       width="600"
+       style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  <br>
+  <em>auto_relocalization_3d_node节点工作流程图</em>
+</div>
 
 #### ---使用事项---
 第一次加载地图之后，需手动拉起2D_estimate进行重定位，成功之后会自动在param下建立JSON并写入坐标，后续使用无需手动拉起。
