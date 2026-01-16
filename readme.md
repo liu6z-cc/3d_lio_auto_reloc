@@ -20,7 +20,7 @@ UltraFastMapPublisher 是针对 ROS 系统大规模点云地图发布场景的�
 自动缓存转换后的 Fast Format 文件，通过文件修改时间（mtime）判断是否需要重新转换，避免频繁重启节点时重复解析 PCD；开启自动转换后，无紧凑格式文件时会自动生成，失败则回退到 PCD 加载，不影响核心功能。
 4. 可视化进度与统计
 新增 ConsoleProgressBar 进度回调机制，实时输出加载阶段、进度百分比、已处理点数；额外发布 /map_stats 话题，输出点云数量、加载耗时、坐标范围等统计信息，方便调试和监控。
-
+![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/UltraFastMapPublisher.png)
 ### ---使用事项---
 注意事项：必需二进制pcd文件为输入源
 python convert_pcd_to_binary.py [输入文件] [输出文件]
@@ -31,6 +31,7 @@ python convert_pcd_to_binary.py [输入文件] [输出文件]
 1. FAISS 索引加速：旧版全局地图配准时需遍历全部点云，大规模地图下效率极低；新版引入 FAISS 近邻搜索库，构建全局地图的 L2 索引，通过 range_search 快速查询指定半径内的点云，配准效率提升 10 倍以上。
 2. 地图缓存机制：新增本地缓存功能，首次加载地图后会将点云数据和 FAISS 索引保存到 ~/.lio_map_cache 目录，后续启动直接加载缓存文件，冷启动速度提升 80%+。
 3. 异步处理框架：地图解析、点云构建、索引创建等耗时操作全部异步执行，避免主线程阻塞，节点启动更快，响应更及时。
+![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/lio_localization.png)
 
 ### ---注意---
 1. 首次启动节点会构建 FAISS 索引，耗时稍长，后续启动加载缓存会大幅提速
@@ -44,9 +45,11 @@ yaw_tolerance：       重定位验证的角度容差（单位：弧度）：当
 ## ------pose_recovery_3d功能包介绍------
 ### pose_recovery_3d_node
 实现位姿记录，监听机器人的全局位姿，定时自动保存到 param/下的两个JSON 文件（缓冲区交替写入），系统重启时加载历史位姿；仅在重定位完成后才开始保存，避免保存错误位姿。
+![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/pose_recovery_3d_node.png)
 
 ### auto_relocalization_3d_node
 实现自动重定位与验证，系统重启后自动加载历史位姿，发布/initialpose触发 SLAM 重定位，验证重定位（position_tolerance + yaw_tolerance），重定位成功后通知位姿保存节点开始工作；同时支持目标点触发重定位、手动服务触发重定位。
+![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/auto_relocalization_3d_node.png)
 
 #### ---使用事项---
 第一次加载地图之后，需手动拉起2D_estimate进行重定位，成功之后会自动在param下建立JSON并写入坐标，后续使用无需手动拉起。
