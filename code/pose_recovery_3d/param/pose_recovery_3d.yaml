@@ -1,0 +1,53 @@
+# 3D位姿恢复参数配置
+
+# 话题设置
+pose_topic: "/arc_pose_tool/base_pose2d"  # 全局坐标位姿话题（geometry_msgs/Pose2D）
+
+# 坐标系设置
+map_frame_id: "map"
+base_frame_id: "body"
+
+# 位姿保存参数
+file_name: "robot_pose_3d"
+file_buffer: 2          # 缓冲文件数量，防止断电数据丢失
+period: 0.5             # 保存周期（秒）
+wait_for_reloc: true    # 是否等待重定位完成后再开始保存位姿
+
+# 位姿协方差（不确定性）
+covariance_x: 0.1       # X方向协方差（米^2）
+covariance_y: 0.1       # Y方向协方差（米^2）
+covariance_z: 0.1       # Z方向协方差（米^2）
+covariance_roll: 0.1    # Roll角协方差（弧度^2）
+covariance_pitch: 0.1   # Pitch角协方差（弧度^2）
+covariance_yaw: 0.2     # Yaw角协方差（弧度^2）
+
+# 自动重定位参数
+enabled: false                  # 是否启用目标点触发重定位（禁用，避免干扰自动初始化）
+auto_init_reloc: true           # 启动时是否自动重定位
+trigger_distance: 0.8           # 触发重定位的距离阈值（米）
+
+# 等待和重试参数（解决点云地图加载慢的问题）
+init_wait_time: 160.0           # 最大等待时间（秒），成功匹配后会提前退出
+retry_interval: 5.0             # 重定位位姿发布间隔（秒）
+max_retries: 32                 # 最大重试次数（已不再使用，由init_wait_time控制）
+check_slam_ready: true          # 是否检查SLAM系统是否就绪
+
+# 重定位验证参数（通过比较当前位姿与目标位姿判断是否成功）
+position_tolerance: 4         # 位置容差（米），当前位姿与目标位姿距离小于此值认为匹配成功
+yaw_tolerance: 0.35             # 角度容差（弧度，约20度），当前yaw与目标yaw差小于此值认为匹配成功
+global_pose_topic: "/arc_pose_tool/base_pose2d"  # 用于获取当前全局位姿的话题
+
+# 角度单位设置
+yaw_in_degrees: true            # JSON文件中的yaw是否为度数（true=度数，false=弧度）
+
+# 重定位话题设置
+initialpose_topic: "/initialpose"                     # 标准ROS初始位姿话题
+initialpose_2d_topic: "/arc_pose_tool/initialpose_2d" # 2D初始位姿话题
+
+# 目标点设置（接近此点时触发重定位，enabled为false时不生效）
+point_x: 0.0
+point_y: 0.0
+point_z: 0.0
+point_roll: 0.0
+point_pitch: 0.0
+point_yaw: 0.0

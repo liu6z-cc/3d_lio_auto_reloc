@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 3D位姿恢复和自动重定位 -->
+    
+    <!-- 参数文件路径 -->
+    <arg name="param_file" default="$(find pose_recovery_3d)/param/pose_recovery_3d.yaml"/>
+    <arg name="pose_save_path" default="$(find pose_recovery_3d)/param/"/>
+    
+    <!-- PCD地图路径 -->
+    <arg name="pcd_path" default=""/>
+    
+    <!-- 位姿保存节点 -->
+    <node name="pose_recovery_3d_node" pkg="pose_recovery_3d" type="pose_recovery_3d_node" output="screen">
+        <rosparam file="$(arg param_file)" command="load"/>
+        <param name="file_path" value="$(arg pose_save_path)"/>
+    </node>
+    
+    <!-- 自动重定位节点 -->
+    <node name="auto_relocalization_3d_node" pkg="pose_recovery_3d" type="auto_relocalization_3d_node" output="screen">
+        <rosparam file="$(arg param_file)" command="load"/>
+        <param name="pose_file_path" value="$(arg pose_save_path)"/>
+        <param name="pcd_path" value="$(arg pcd_path)"/>
+    </node>
+    
+</launch>

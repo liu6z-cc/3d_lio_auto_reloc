@@ -1,0 +1,15 @@
+{
+    "x": -0.085559,
+    "y": -0.507429,
+    "z": 0.000000,
+    "roll": 0.000000,
+    "pitch": 0.000000,
+    "yaw": 98.423401,
+    "covariance_x": 0.100000,
+    "covariance_y": 0.100000,
+    "covariance_z": 0.100000,
+    "covariance_roll": 0.100000,
+    "covariance_pitch": 0.100000,
+    "covariance_yaw": 0.200000,
+    "timestamp": 1768487205.005696
+}

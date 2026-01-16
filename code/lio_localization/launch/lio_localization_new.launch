@@ -1,0 +1,13 @@
+<launch>
+
+    <!-- loalization-->
+    <node pkg="lio_localization" type="global_localization_new.py" name="global_localization" output="screen" >
+      <param name="map_voxel_size" value="0.01"/>
+      <param name="scan_voxel_size" value="0.02"/>
+      <param name="freq_localization" value="1.0"/>
+      <param name="localization_th" value="0.95"/>
+      
+    </node>
+    <!-- <node pkg="lio_localization" type="global_localization.py" name="global_localization" output="screen" launch-prefix="gnome-terminal -e" /> -->
+
+</launch>
