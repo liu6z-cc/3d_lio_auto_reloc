@@ -32,7 +32,6 @@ python convert_pcd_to_binary.py [输入文件] [输出文件]
 2. 地图缓存机制：新增本地缓存功能，首次加载地图后会将点云数据和 FAISS 索引保存到 ~/.lio_map_cache 目录，后续启动直接加载缓存文件，冷启动速度提升 80%+。
 3. 异步处理框架：地图解析、点云构建、索引创建等耗时操作全部异步执行，避免主线程阻塞，节点启动更快，响应更及时。
 ![功能示意图](https://github.com/liu6z-cc/3d_lio_auto_reloc/blob/main/Flowchart/lio_localization.png){: width="600" height="800"}
-
 ### ---注意---
 1. 首次启动节点会构建 FAISS 索引，耗时稍长，后续启动加载缓存会大幅提速
 2. 首次运行之后，会在/home/ubuntu/.lio_map_cache生成相应的缓存文件，若地图更新需要删除lio_ma_cache文件夹
